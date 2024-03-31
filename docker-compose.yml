@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mongodb-user-ms:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user-ms
+      - MONGO_INITDB_ROOT_PASSWORD=user-ms-123
+    ports:
+      - 27017:27017
+    volumes:
+      - db-user-ms:/data/db-user-ms
+
+  redis-user-ms:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '19861:6379'
+    command: redis-server --save 60 1 --loglevel warning --requirepass userms123
+    volumes:
+      - ./data:/redis-user-ms
+
+
+volumes:
+  db-user-ms:
